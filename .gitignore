@@ -11,6 +11,8 @@
 /[Mm]emoryCaptures/
 /[Aa]ssets/SampleScenes
 /[Aa]ssets/Standard Assets
+/[Aa]ssets/StarSparrow
+/Assets/music.mp3
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
 
