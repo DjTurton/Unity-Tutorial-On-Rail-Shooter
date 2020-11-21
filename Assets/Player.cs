@@ -15,10 +15,10 @@ public class Player : MonoBehaviour
     float yThrow;
     
     //rotation factors
-    [Tooltip("In deg")] [SerializeField] float postionPitchFactor = -5f; // range
-    [SerializeField] float controlPitchFactor = -5f; 
-
-    [SerializeField] float controlRollFactor = -10f; 
+    [SerializeField] float positionPitchFactor = -5f;
+    [SerializeField] float controlPitchFactor = -20f;
+    [SerializeField] float positionYawFactor = 5f;
+    [SerializeField] float controlRollFactor = -20f;
 
 
     // Start is called before the first frame update
@@ -49,8 +49,12 @@ public class Player : MonoBehaviour
     // Rotate the ship for relative location
     void CheckRotation()
     {
-        float pitch = transform.localPosition.y * postionPitchFactor + (yThrow * controlPitchFactor);
-        float yaw = 0f;
+        float pitchDueToPosition = transform.localPosition.y * positionPitchFactor;
+        float pitchDueToControlThrow = yThrow * controlPitchFactor;
+        float pitch = pitchDueToPosition + pitchDueToControlThrow;
+
+        float yaw = transform.localPosition.x * positionYawFactor;
+
         float roll = xThrow * controlRollFactor;
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
     }
