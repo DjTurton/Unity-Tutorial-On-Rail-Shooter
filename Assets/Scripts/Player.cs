@@ -5,21 +5,25 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour
 {
-    //movement factors
+    [Header("General")]
     [Tooltip("In ms^-1")] [SerializeField] float xSpeed = 4f; //X speed
     [Tooltip("In M")] [SerializeField] float xRange = 40f; //X Range
     [Tooltip("In ms^-1")] [SerializeField] float ySpeed = 4f; // Y speed
     [Tooltip("In M")] [SerializeField] float yRange = 20f; // Y range
+    [SerializeField] GameObject[] guns;
 
     float xThrow;
     float yThrow;
-    
-    //rotation factors
-    [SerializeField] float positionPitchFactor = -5f;
-    [SerializeField] float controlPitchFactor = -20f;
-    [SerializeField] float positionYawFactor = 5f;
-    [SerializeField] float controlRollFactor = -20f;
 
+    [Header("Screen-Position based")]
+    [SerializeField] float positionPitchFactor = -5f;
+    [SerializeField] float positionYawFactor = 5f;
+    
+    [Header("Control-Throw based")]
+    [SerializeField] float controlRollFactor = -20f;
+    [SerializeField] float controlPitchFactor = -20f;
+
+    bool isControlEnabled = true;
 
     // Start is called before the first frame update
     void Start()
@@ -59,10 +63,60 @@ public class Player : MonoBehaviour
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
     }
 
+    // Fire the guns bullets using the key
+    void CheckFiring()
+    {
+        if (CrossPlatformInputManager.GetButton("Fire1"))
+        {
+            ActivateGuns();
+        }
+        else 
+        {
+            DeactivateGuns();
+        }
+    }
+
+    // activate guns
+    void ActivateGuns()
+    {
+        foreach (GameObject gun in guns)
+        {
+            gun.SetActive(true);
+        }
+    }
+
+    // deactivate guns
+    void DeactivateGuns()
+    {
+        foreach (GameObject gun in guns)
+        {
+            gun.SetActive(false);
+        }
+    }
+
+    //trigger on colision with "collision"
+    void OnCollisionEnter(Collision collision)
+    {
+        print("something collided");
+    }
+
+    //Handling player death sequence
+    void OnPlayerDeath() // called by string reference
+    {
+        print("Controls frozen!");
+        isControlEnabled = false;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
-        CheckMovement();
-        CheckRotation();
+        if (isControlEnabled) 
+        {
+            CheckMovement();
+            CheckRotation();
+            CheckFiring();
+        }
+        
     }
 }

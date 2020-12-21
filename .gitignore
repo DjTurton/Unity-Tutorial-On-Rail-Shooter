@@ -13,6 +13,8 @@
 /[Aa]ssets/Standard Assets
 /[Aa]ssets/StarSparrow
 /Assets/music.mp3
+/Assets/generic_space_enemy/
+
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
 
